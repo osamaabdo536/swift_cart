@@ -11,4 +11,5 @@ class AppIcons {
   static const productCircleIcon = "${_path}product_circle.svg";
   static const profileIcon = "${_path}profile.svg";
   static const profileCircleIcon = "${_path}profile_circle.svg";
+  static const plusIcon = "${_path}plus.svg";
 }

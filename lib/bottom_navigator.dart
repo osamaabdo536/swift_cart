@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:swift_cart/core/resources/app_colors.dart';
-import 'package:swift_cart/features/prodcut/favorite.dart';
-import 'package:swift_cart/features/prodcut/product.dart';
 import 'package:swift_cart/features/profile/profile.dart';
-
 import 'core/resources/app_icons.dart';
 import 'features/home/home.dart';
+import 'features/product/favorite.dart';
+import 'features/product/product.dart';
 
 class BottomNavigator extends StatefulWidget {
   const BottomNavigator({super.key});
