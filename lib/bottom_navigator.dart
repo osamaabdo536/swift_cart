@@ -4,7 +4,7 @@ import 'package:swift_cart/core/resources/app_colors.dart';
 import 'package:swift_cart/features/profile/profile.dart';
 import 'core/resources/app_icons.dart';
 import 'features/home/home.dart';
-import 'features/product/favorite.dart';
+import 'features/favorite/favorite.dart';
 import 'features/product/product.dart';
 
 class BottomNavigator extends StatefulWidget {
