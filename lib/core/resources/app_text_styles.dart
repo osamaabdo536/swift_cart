@@ -69,6 +69,13 @@ class AppTextStyles {
     fontWeight: FontWeight.w400,
   );
 
+  static const TextStyle main20Medium = TextStyle(
+    color: AppColors.mainColor,
+    fontSize: 20,
+    fontFamily: _fontFamily,
+    fontWeight: FontWeight.w500,
+  );
+
   static const TextStyle main20SemiBold = TextStyle(
     color: AppColors.mainColor,
     fontSize: 20,
@@ -78,21 +85,21 @@ class AppTextStyles {
 
   /// description color + font
   static const TextStyle description14light = TextStyle(
-    color: AppColors.whiteColor,
+    color: AppColors.descriptionColor,
     fontSize: 14,
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w300,
   );
 
   static const TextStyle description14Medium = TextStyle(
-    color: AppColors.whiteColor,
+    color: AppColors.descriptionColor,
     fontSize: 14,
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w500,
   );
 
   static const TextStyle description18Medium = TextStyle(
-    color: AppColors.whiteColor,
+    color: AppColors.descriptionColor,
     fontSize: 18,
     fontFamily: _fontFamily,
     fontWeight: FontWeight.w500,

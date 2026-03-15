@@ -17,5 +17,7 @@ class AppIcons {
   static const deleteIcon = "${_path}delete.svg";
   static const arrowBackIcon = "${_path}arrow_back.svg";
   static const arrowIcon = "${_path}arrow.svg";
-  
+  static const cartIcon = "${_path}cart.svg";
+  static const detailsPlusIcon = "${_path}details_plus.svg";
+  static const detailsMinusIcon = "${_path}details_minus_.svg";
 }

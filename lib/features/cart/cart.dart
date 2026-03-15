@@ -14,10 +14,6 @@ class Cart extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
-        leading: IconButton(
-          onPressed: () {},
-          icon: SvgPicture.asset(AppIcons.arrowBackIcon),
-        ),
         title: Text("Cart", style: AppTextStyles.main20SemiBold),
         centerTitle: true,
       ),
