@@ -7,7 +7,7 @@ class DioConfig {
 
   static final Duration timeout = const Duration(seconds: 30);
 
-  static Dio getDio({String? token}) {
+  static Dio getDio() {
     Dio dio = Dio()
       ..options.baseUrl = ApiConstants.baseUrl
       ..options.connectTimeout = timeout
@@ -15,21 +15,33 @@ class DioConfig {
       ..options.responseType = ResponseType.json
       ..options.contentType = 'application/json'
       ..interceptors.addAll([
-        AuthInterceptor(token: token),
+        AuthInterceptor(),
       ]);
     return dio;
   }
 }
 
+// class AuthInterceptor extends InterceptorsWrapper {
+//   final String? token;
+//   AuthInterceptor({this.token});
+
+//   @override
+//   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+//     if (token != null && token!.isNotEmpty) {
+//       options.headers['Authorization'] = 'Bearer $token';
+//     }
+//     debugPrint('Request to: ${options.path}');
+//     debugPrint('Headers: ${options.headers}');
+//     handler.next(options);
+//   }
+// }
+
 class AuthInterceptor extends InterceptorsWrapper {
-  final String? token;
-  AuthInterceptor({this.token});
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    if (token != null && token!.isNotEmpty) {
-      options.headers['Authorization'] = 'Bearer $token';
-    }
+
+    options.headers['token'] = ApiConstants.token;
     debugPrint('Request to: ${options.path}');
     debugPrint('Headers: ${options.headers}');
     handler.next(options);

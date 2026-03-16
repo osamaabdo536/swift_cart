@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:swift_cart/features/favorite/cubit/favorite_cubit.dart';
+import 'package:swift_cart/features/favorite/cubit/favorite_state.dart';
 import '../../../core/resources/app_icons.dart';
 import '../../../core/resources/app_text_styles.dart';
 import '../model/products_model.dart';
@@ -13,10 +16,16 @@ class ProductItem extends StatefulWidget {
 }
 
 class _ProductItemState extends State<ProductItem> {
-  bool isFav = false;
   @override
-  Widget build(BuildContext context) {
-    return Card(
+Widget build(BuildContext context) {
+  return BlocBuilder<FavoriteCubit, FavoriteState>(
+    builder: (context, state) {
+
+      final favoriteCubit = context.read<FavoriteCubit>();
+
+      bool isFav = favoriteCubit.favoriteIds.contains(widget.product.id);
+
+      return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       elevation: 2,
       clipBehavior: Clip.antiAlias,
@@ -37,9 +46,11 @@ class _ProductItemState extends State<ProductItem> {
                 child: InkWell(
                   onTap: () {
                     /// add to favorite logic
-                    setState(() {
-                      isFav = !isFav;
-                    });
+                      if (isFav) {
+                        context.read<FavoriteCubit>().removeFromFavorite(widget.product.id);
+                      } else {
+                        context.read<FavoriteCubit>().addToFavorite(widget.product.id);
+                      }
                   },
                   child: isFav
                       ? SvgPicture.asset(AppIcons.favoriteFilledIcon)
@@ -109,6 +120,8 @@ class _ProductItemState extends State<ProductItem> {
           ),
         ],
       ),
+    );
+  }
     );
   }
 }

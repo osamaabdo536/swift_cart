@@ -18,4 +18,53 @@ class ApiService{
       throw ApiException.fromDioError(e);
     }
   }
+
+  Future<ProductModel> getProductById(String productId) async {
+  try {
+    final response = await _dio.get("${ApiConstants.productsEndPoint}/$productId");
+    return ProductModel.fromJson(response.data["data"]);
+  } on DioException catch (e) {
+    throw ApiException.fromDioError(e);
+  }
+  }
+
+  //WISHLIST
+  Future<List<String>> addToWishlist(String productId) async {
+    try {
+      final response = await _dio.post(
+        ApiConstants.wishlistEndPoint,
+        data: {
+          "productId": productId,
+        },
+      );
+
+      return List<String>.from(response.data["data"]);
+    } on DioException catch (e) {
+      throw ApiException.fromDioError(e);
+    }
+  }
+
+  Future<List<String>> removeFromWishlist(String productId) async {
+    try {
+      final response = await _dio.delete(
+        "${ApiConstants.wishlistEndPoint}/$productId",
+      );
+
+      return List<String>.from(response.data["data"]);
+    } on DioException catch (e) {
+      throw ApiException.fromDioError(e);
+    }
+  }
+
+  Future<List<ProductModel>> getWishlist() async {
+    try {
+      final response = await _dio.get(ApiConstants.wishlistEndPoint);
+
+      return (response.data["data"] as List)
+          .map((e) => ProductModel.fromJson(e))
+          .toList();
+    } on DioException catch (e) {
+      throw ApiException.fromDioError(e);
+    }
+  }
 }

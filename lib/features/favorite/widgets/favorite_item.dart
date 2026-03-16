@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/resources/app_colors.dart';
 import '../../../core/resources/app_icons.dart';
 import '../../../core/resources/app_text_styles.dart';
+import '../../product/model/products_model.dart';
+import '../cubit/favorite_cubit.dart';
 
 class FavoriteItem extends StatelessWidget {
-  const FavoriteItem({super.key});
+  final ProductModel product;
+
+  const FavoriteItem({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +25,8 @@ class FavoriteItem extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(15),
-            child: Image.asset(
-              "assets/images/slider1.png",
+            child: Image.network(
+              product.imageCover,
               width: 120,
               height: 125,
               fit: BoxFit.cover,
@@ -30,7 +35,8 @@ class FavoriteItem extends StatelessWidget {
           const SizedBox(width: 8),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+              padding: const EdgeInsets.symmetric(
+                  vertical: 8.0, horizontal: 8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -39,7 +45,7 @@ class FavoriteItem extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          "Nike Air Jordon",
+                          product.title,
                           style: AppTextStyles.main18Medium.copyWith(
                             color: AppColors.textColor,
                           ),
@@ -47,82 +53,76 @@ class FavoriteItem extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      Container(
-                        height: 35,
-                        width: 35,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey,
-                              blurRadius: 5,
-                              offset: const Offset(0, 2),
-                            )
-                          ],
-                        ),
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Positioned(
-                              top: -5, 
-                              child: SvgPicture.asset(
-                                AppIcons.favoriteFilledIcon,
-                                width: 58, 
-                                fit: BoxFit.contain,
-                                
+                      InkWell(
+                        onTap: () {
+                          context
+                              .read<FavoriteCubit>()
+                              .removeFromFavorite(product.id);
+                        },
+                        child: Container(
+                          height: 35,
+                          width: 35,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey,
+                                blurRadius: 5,
+                                offset: const Offset(0, 2),
+                              )
+                            ],
+                          ),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Positioned(
+                                top: -5,
+                                child: SvgPicture.asset(
+                                  AppIcons.favoriteFilledIcon,
+                                  width: 58,
+                                  fit: BoxFit.contain,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       )
                     ],
                   ),
+
                   const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      Container(
-                        width: 12,
-                        height: 12,
-                        decoration: const BoxDecoration(
-                          color: AppColors.black70Color,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      const SizedBox(width: 6),
-                      Text(
-                        "Black color",
-                        style: AppTextStyles.main14Regular.copyWith(
-                          color: AppColors.textColor,
-                        ),
-                      ),
-                    ],
-                  ),
+
                   const Spacer(),
+
+                  /// price + button
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            "EGP 1,200",
+                            "EGP ${product.priceAfterDiscount ?? product.price}",
                             style: AppTextStyles.main18Medium.copyWith(
                               color: AppColors.textColor,
                               fontSize: 14,
                             ),
                           ),
                           const SizedBox(width: 8),
-                          Text(
-                            "EGP 1,500",
-                            style: TextStyle(
-                              color: AppColors.mainColor.withOpacity(0.5),
-                              fontSize: 10,
-                              decoration: TextDecoration.lineThrough,
+
+                          if (product.priceAfterDiscount != null)
+                            Text(
+                              "EGP ${product.price}",
+                              style: TextStyle(
+                                color: AppColors.mainColor.withOpacity(0.5),
+                                fontSize: 10,
+                                decoration: TextDecoration.lineThrough,
+                              ),
                             ),
-                          ),
                         ],
                       ),
+
+                      /// add to cart button
                       SizedBox(
                         height: 36,
                         child: ElevatedButton(
@@ -132,7 +132,8 @@ class FavoriteItem extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16),
                             elevation: 0,
                           ),
                           child: Text(

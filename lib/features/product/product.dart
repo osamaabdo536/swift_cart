@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:swift_cart/features/favorite/cubit/favorite_cubit.dart';
 import 'package:swift_cart/features/product/product_details.dart';
 import 'package:swift_cart/features/product/widgets/product_item.dart';
 import 'cubit/product_cubit.dart';
@@ -10,8 +11,17 @@ class Product extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ProductCubit()..getAllProducts(),
+    return MultiBlocProvider(
+      providers: [
+        /// products
+        BlocProvider(
+          create: (context) => ProductCubit()..getAllProducts(),
+        ),
+        /// favorites
+        BlocProvider(
+          create: (context) => FavoriteCubit()..getFavorites(),
+        ),
+      ],
       child: Scaffold(
         body: SafeArea(
           child: BlocBuilder<ProductCubit, ProductState>(
