@@ -12,7 +12,7 @@ class ProductCubit extends Cubit<ProductState> {
       final products = await ApiService.instance.getAllProducts();
       emit(ProductSuccessState(products: products));
     } on ApiException catch (e) {
-      emit(ProductFailureState(errMsg: e.errorMessage));
+      emit(ProductFailureState(errMsg: e.message));
     }
   }
 }
