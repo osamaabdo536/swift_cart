@@ -1,10 +1,13 @@
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' show Dio, DioException;
 import 'package:swift_cart/core/network/dio_config.dart';
-import '../../features/product/model/products_model.dart';
-import 'api_exception.dart';
-import 'api_constants.dart';
+import 'package:swift_cart/features/product/model/products_model.dart';
 
-class ApiService{
+import '../../features/category/model/category_model.dart' as cat;
+import '../../features/category/model/category_model.dart';
+import 'api_constants.dart' show ApiConstants;
+import 'api_exception.dart';
+
+class ApiService {
   ApiService._();
   static final ApiService instance = ApiService._();
 
@@ -20,12 +23,14 @@ class ApiService{
   }
 
   Future<ProductModel> getProductById(String productId) async {
-  try {
-    final response = await _dio.get("${ApiConstants.productsEndPoint}/$productId");
-    return ProductModel.fromJson(response.data["data"]);
-  } on DioException catch (e) {
-    throw ApiException.fromDioError(e);
-  }
+    try {
+      final response = await _dio.get(
+        "${ApiConstants.productsEndPoint}/$productId",
+      );
+      return ProductModel.fromJson(response.data["data"]);
+    } on DioException catch (e) {
+      throw ApiException.fromDioError(e);
+    }
   }
 
   //WISHLIST
@@ -33,9 +38,7 @@ class ApiService{
     try {
       final response = await _dio.post(
         ApiConstants.wishlistEndPoint,
-        data: {
-          "productId": productId,
-        },
+        data: {"productId": productId},
       );
 
       return List<String>.from(response.data["data"]);
@@ -67,4 +70,29 @@ class ApiService{
       throw ApiException.fromDioError(e);
     }
   }
+
+  //////////Categories/////////
+
+  Future<List<cat.CategoryModel>> getAllCategories() async {
+    try {
+      final response = await _dio.get(ApiConstants.categoriesEndPoint);
+      return CategoriesResponse.fromJson(response.data).data;
+    } on DioException catch (e) {
+      throw ApiException.fromDioError(e);
+    }
+  }
+
+  Future<List<ProductModel>> getProductsByCategory(String categoryId) async {
+    try {
+      final response = await _dio.get(
+        ApiConstants.productsEndPoint,
+        queryParameters: {'category': categoryId},
+      );
+      return ProductsResponse.fromJson(response.data).data;
+    } on DioException catch (e) {
+      throw ApiException.fromDioError(e);
+    }
+  }
+
+  //////////Categories///////////
 }
