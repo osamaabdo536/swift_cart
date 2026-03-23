@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../core/network/api_service.dart';
+import 'package:swift_cart/core/network/api_service.dart';
 import '../../../core/network/api_exception.dart';
 import 'categories_state.dart';
 
@@ -12,7 +12,7 @@ class CategoriesCubit extends Cubit<CategoriesState> {
       final categories = await ApiService.instance.getAllCategories();
       emit(CategoriesSuccess(categories));
     } on ApiException catch (e) {
-      emit(CategoriesError(e.errorMessage));
+      emit(CategoriesError(e.message));
     }
   }
 }

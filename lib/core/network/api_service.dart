@@ -1,18 +1,35 @@
-import 'package:dio/dio.dart' show Dio, DioException;
+import 'package:dio/dio.dart';
 import 'package:swift_cart/core/network/dio_config.dart';
 import 'package:swift_cart/features/product/model/products_model.dart';
-
 import '../../features/category/model/category_model.dart' as cat;
 import '../../features/category/model/category_model.dart';
 import 'api_constants.dart' show ApiConstants;
 import 'api_exception.dart';
 
 class ApiService {
+  final Dio _dio = DioConfig.getDio();
+
   ApiService._();
   static final ApiService instance = ApiService._();
 
-  final Dio _dio = DioConfig.getDio();
+  // Generic methods
+  Future<Response> get(String endpoint) async {
+    try {
+      return await _dio.get(endpoint);
+    } on DioException catch (e) {
+      throw ApiException.fromDioError(e);
+    }
+  }
 
+  Future<Response> post(String endpoint, {Object? data}) async {
+    try {
+      return await _dio.post(endpoint, data: data);
+    } on DioException catch (e) {
+      throw ApiException.fromDioError(e);
+    }
+  }
+
+  // Product methods
   Future<List<ProductModel>> getAllProducts() async {
     try {
       final response = await _dio.get(ApiConstants.productsEndPoint);

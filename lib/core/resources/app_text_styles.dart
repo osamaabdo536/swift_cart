@@ -113,6 +113,42 @@ class AppTextStyles {
     fontWeight: FontWeight.w400,
   );
 
+  // Additional common styles
+  static const TextStyle bold24 = TextStyle(
+    fontSize: 24,
+    fontFamily: _fontFamily,
+    fontWeight: FontWeight.w700,
+    color: AppColors.textColor,
+  );
+
+  static const TextStyle semiBold16 = TextStyle(
+    fontSize: 16,
+    fontFamily: _fontFamily,
+    fontWeight: FontWeight.w600,
+    color: AppColors.textColor,
+  );
+
+  static const TextStyle semiBold14 = TextStyle(
+    fontSize: 14,
+    fontFamily: _fontFamily,
+    fontWeight: FontWeight.w600,
+    color: AppColors.textColor,
+  );
+
+  static const TextStyle medium14 = TextStyle(
+    fontSize: 14,
+    fontFamily: _fontFamily,
+    fontWeight: FontWeight.w500,
+    color: AppColors.textColor,
+  );
+
+  static const TextStyle regular14 = TextStyle(
+    fontSize: 14,
+    fontFamily: _fontFamily,
+    fontWeight: FontWeight.w400,
+    color: AppColors.textColor,
+  );
+
   static const TextStyle dark24Bold = TextStyle(
     color: AppColors.textColor,
     fontSize: 24,

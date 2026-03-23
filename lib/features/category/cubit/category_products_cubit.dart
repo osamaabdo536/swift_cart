@@ -14,7 +14,7 @@ class CategoryProductsCubit extends Cubit<CategoryProductsState> {
       );
       emit(CategoryProductsSuccess(products));
     } on ApiException catch (e) {
-      emit(CategoryProductsError(e.errorMessage));
+      emit(CategoryProductsError(e.message));
     }
   }
 }

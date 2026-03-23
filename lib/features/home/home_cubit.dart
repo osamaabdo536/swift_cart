@@ -15,11 +15,12 @@ class HomeCubit extends Cubit<HomeStates> {
     try {
       var productResponse = await DioConfig.getDio().get("Products");
       var response = await DioConfig.getDio().get("categories");
+      var brandResponse = await DioConfig.getDio().get("brands");
+
       allProducts = productResponse.data['data'];
       categories = response.data['data'];
 
       filteredProducts = allProducts;
-      var brandResponse = await DioConfig.getDio().get("brands");
       brands = brandResponse.data['data'];
 
       emit(HomeSuccessState(filteredProducts, categories, brands));
