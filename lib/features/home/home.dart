@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:swift_cart/features/cart/cart.dart';
 import 'package:swift_cart/features/category/view/category_products_screen.dart';
 import 'package:swift_cart/features/home/all_categories.dart';
@@ -7,6 +8,10 @@ import 'home_cubit.dart';
 import 'home_state.dart';
 import 'category_item.dart';
 import 'package:carousel_slider_plus/carousel_slider_plus.dart';
+import 'package:swift_cart/core/resources/app_colors.dart';
+import 'package:swift_cart/core/resources/app_icons.dart';
+import 'package:swift_cart/core/resources/app_images.dart';
+import 'package:swift_cart/core/resources/app_text_styles.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -14,14 +19,14 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<String> sliderImages = [
-      "assets/images/slider1.png",
-      "assets/images/slider2.png",
-      "assets/images/slider3.png",
+      AppImages.slider1,
+      AppImages.slider2,
+      AppImages.slider3,
     ];
     return BlocProvider(
       create: (context) => HomeCubit()..getHomeData(),
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.whiteColor,
         body: SafeArea(
           child: BlocBuilder<HomeCubit, HomeStates>(
             builder: (context, state) {
@@ -39,13 +44,10 @@ class Home extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Text(
+                                Text(
                                   "Route",
-                                  style: TextStyle(
+                                  style: AppTextStyles.main20SemiBold.copyWith(
                                     fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xff06004f),
-                                    fontFamily: 'Poppins',
                                   ),
                                 ),
 
@@ -58,9 +60,12 @@ class Home extends StatelessWidget {
                                       ),
                                     );
                                   },
-                                  icon: const Icon(
-                                    Icons.shopping_cart_outlined,
-                                    color: Color(0xFF06004F),
+                                  icon: SvgPicture.asset(
+                                    AppIcons.cartIcon,
+                                    colorFilter: const ColorFilter.mode(
+                                      AppColors.mainColor,
+                                      BlendMode.srcIn,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -108,11 +113,7 @@ class Home extends StatelessWidget {
                           children: [
                             const Text(
                               "Categories",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF06004F),
-                              ),
+                              style: AppTextStyles.description18Medium,
                             ),
                             InkWell(
                               onTap: () {
@@ -128,10 +129,7 @@ class Home extends StatelessWidget {
 
                               child: const Text(
                                 "view all",
-                                style: TextStyle(
-                                  color: Color(0xFF06004F),
-                                  decoration: TextDecoration.underline,
-                                ),
+                                style: AppTextStyles.main14Regular,
                               ),
                             ),
                           ],
@@ -178,11 +176,7 @@ class Home extends StatelessWidget {
                         padding: const EdgeInsets.all(16.0),
                         child: const Text(
                           "Brands",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF06004F),
-                          ),
+                          style: AppTextStyles.description18Medium,
                         ),
                       ),
                     ),
@@ -205,7 +199,7 @@ class Home extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15),
                                   border: Border.all(
-                                    color: Colors.blue.withOpacity(0.3),
+                                    color: AppColors.strokeColor,
                                   ),
                                 ),
 
@@ -230,6 +224,7 @@ class Home extends StatelessWidget {
                         ),
                       ),
                     ),
+                    SliverToBoxAdapter(child: SizedBox(height: 40)),
                   ],
                 );
               } else if (state is HomeErrorState) {

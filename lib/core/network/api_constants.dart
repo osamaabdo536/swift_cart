@@ -1,12 +1,12 @@
 class ApiConstants {
   ApiConstants._();
 
-  static const String baseUrl = 'https://ecommerce.routemisr.com/';
-  static const String productsEndPoint = 'api/v1/products';
-  static const String wishlistEndPoint = 'api/v1/wishlist';
+  static const String baseUrl = 'https://ecommerce.routemisr.com/api/v1/';
+  static const String productsEndPoint = 'products';
+  static const String wishlistEndPoint = 'wishlist';
 
   /////Categories///
-  static const String categoriesEndPoint = 'api/v1/categories';
+  static const String categoriesEndPoint = 'categories';
   /////Categories/////
 
   //temp token

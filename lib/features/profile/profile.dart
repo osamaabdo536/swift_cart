@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:swift_cart/core/resources/app_colors.dart';
+import 'package:swift_cart/core/resources/app_text_styles.dart';
 
 class Profile extends StatelessWidget {
   const Profile({super.key});
@@ -6,14 +8,7 @@ class Profile extends StatelessWidget {
   Widget _buildFieldTitle(String title) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0, top: 16.0),
-      child: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 16,
-          color: Color(0xFF06004F),
-          fontWeight: FontWeight.w500,
-        ),
-      ),
+      child: Text(title, style: AppTextStyles.description18Medium),
     );
   }
 
@@ -22,32 +17,28 @@ class Profile extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.whiteColor,
         borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: Colors.grey.withOpacity(0.3), width: 1),
+        border: Border.all(color: AppColors.strokeColor),
       ),
       child: Text(
         value ?? hintText ?? "",
-        style: TextStyle(
-          fontSize: 14,
-          color: value != null ? const Color(0xFF06004F) : Colors.grey,
-          fontWeight: value != null ? FontWeight.w400 : FontWeight.w300,
-        ),
+        style: value != null
+            ? AppTextStyles.description14Medium
+            : AppTextStyles.description14light,
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    const routePrimaryColor = Color(0xFF06004F);
-
     final String fullName = "Mohamed Mohamed Nabil";
     final String email = "mohamed.N@gmail.com";
     final String mobile = "01122118855";
     final String address = "6th October, street 11...";
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.whiteColor,
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
@@ -58,30 +49,14 @@ class Profile extends StatelessWidget {
               children: [
                 Text(
                   "Route",
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Poppins',
-                    color: routePrimaryColor,
-                  ),
+                  style: AppTextStyles.main20SemiBold.copyWith(fontSize: 24),
                 ),
                 const SizedBox(height: 15),
                 Text(
                   "Welcome, ${fullName.split(' ')[0]}",
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: routePrimaryColor,
-                  ),
+                  style: AppTextStyles.main18Medium,
                 ),
-                Text(
-                  email,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
+                Text(email, style: AppTextStyles.description14light),
                 const SizedBox(height: 10),
 
                 _buildFieldTitle("Your full name"),

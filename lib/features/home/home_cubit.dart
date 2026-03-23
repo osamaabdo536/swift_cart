@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../core/network/dio_factory.dart';
+import '../../../../core/network/dio_config.dart';
 import 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeStates> {
@@ -13,13 +13,13 @@ class HomeCubit extends Cubit<HomeStates> {
     emit(HomeLoadingState());
 
     try {
-      var productResponse = await DioFactory.getDio().get("Products");
-      var response = await DioFactory.getDio().get("categories");
+      var productResponse = await DioConfig.getDio().get("Products");
+      var response = await DioConfig.getDio().get("categories");
       allProducts = productResponse.data['data'];
       categories = response.data['data'];
 
       filteredProducts = allProducts;
-      var brandResponse = await DioFactory.getDio().get("brands");
+      var brandResponse = await DioConfig.getDio().get("brands");
       brands = brandResponse.data['data'];
 
       emit(HomeSuccessState(filteredProducts, categories, brands));
