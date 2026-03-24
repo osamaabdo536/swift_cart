@@ -4,12 +4,38 @@ import '../../features/product/model/products_model.dart';
 import 'api_exception.dart';
 import 'api_constants.dart';
 
-class ApiService{
+class ApiService {
   ApiService._();
   static final ApiService instance = ApiService._();
 
   final Dio _dio = DioConfig.getDio();
 
+  // Generic methods
+  Future<Response> get(String endpoint) async {
+    try {
+      return await _dio.get(endpoint);
+    } on DioException catch (e) {
+      throw ApiException.fromDioError(e);
+    }
+  }
+
+  Future<Response> post(String endpoint, {dynamic data}) async {
+    try {
+      return await _dio.post(endpoint, data: data);
+    } on DioException catch (e) {
+      throw ApiException.fromDioError(e);
+    }
+  }
+
+  Future<Response> delete(String endpoint) async {
+    try {
+      return await _dio.delete(endpoint);
+    } on DioException catch (e) {
+      throw ApiException.fromDioError(e);
+    }
+  }
+
+  // Product methods
   Future<List<ProductModel>> getAllProducts() async {
     try {
       final response = await _dio.get(ApiConstants.productsEndPoint);
@@ -20,12 +46,14 @@ class ApiService{
   }
 
   Future<ProductModel> getProductById(String productId) async {
-  try {
-    final response = await _dio.get("${ApiConstants.productsEndPoint}/$productId");
-    return ProductModel.fromJson(response.data["data"]);
-  } on DioException catch (e) {
-    throw ApiException.fromDioError(e);
-  }
+    try {
+      final response = await _dio.get(
+        "${ApiConstants.productsEndPoint}/$productId",
+      );
+      return ProductModel.fromJson(response.data["data"]);
+    } on DioException catch (e) {
+      throw ApiException.fromDioError(e);
+    }
   }
 
   //WISHLIST
@@ -33,9 +61,7 @@ class ApiService{
     try {
       final response = await _dio.post(
         ApiConstants.wishlistEndPoint,
-        data: {
-          "productId": productId,
-        },
+        data: {"productId": productId},
       );
 
       return List<String>.from(response.data["data"]);
