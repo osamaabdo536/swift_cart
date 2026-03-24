@@ -59,6 +59,7 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(body: Center(child: Text("profile")));
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile', style: AppTextStyles.semiBold16),
