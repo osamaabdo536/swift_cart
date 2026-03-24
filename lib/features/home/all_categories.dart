@@ -55,7 +55,7 @@ class AllCategoriesScreen extends StatelessWidget {
                 );
               },
               highlightColor: Colors.black12,
-              splashColor: Colors.black.withOpacity(0.05),
+              splashColor: Colors.black.withValues(alpha: 0.05),
               borderRadius: BorderRadius.circular(15),
               child: Padding(
                 padding: const EdgeInsets.all(0.8),

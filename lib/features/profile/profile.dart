@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:swift_cart/core/resources/app_text_styles.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:swift_cart/core/resources/app_colors.dart';
-import 'package:swift_cart/features/auth/auth_injection.dart';
 import 'package:swift_cart/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:swift_cart/features/auth/presentation/cubit/auth_state.dart';
 import 'package:swift_cart/features/auth/login.dart';
@@ -35,8 +34,8 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: Text("profile")));
     return Scaffold(
+      backgroundColor: AppColors.whiteColor,
       appBar: AppBar(
         title: Text('My Profile', style: AppTextStyles.semiBold16),
         centerTitle: true,
@@ -59,87 +58,78 @@ class Profile extends StatelessWidget {
             String email = "example@mail.com";
 
             if (state is AuthSuccess) {
-              name = state.user.name ?? name;
-              email = state.user.email ?? email;
+              name = state.user.name;
+              email = state.user.email;
             }
 
             return SingleChildScrollView(
               padding: const EdgeInsets.all(24),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundColor: AppColors.primary.withOpacity(0.1),
-                    child: Text(
-                      name[0].toUpperCase(),
-                      style: AppTextStyles.semiBold16.copyWith(
-                        fontSize: 32,
-                        color: AppColors.primary,
+                  Column(
+                    children: [
+                      const SizedBox(height: 20),
+                      CircleAvatar(
+                        radius: 50,
+                        backgroundColor: AppColors.primary.withValues(
+                          alpha: 0.1,
+                        ),
+                        child: Text(
+                          name.isNotEmpty ? name[0].toUpperCase() : "G",
+                          style: AppTextStyles.semiBold16.copyWith(
+                            fontSize: 32,
+                            color: AppColors.primary,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
+                      const SizedBox(height: 32),
 
-                  Text(name, style: AppTextStyles.semiBold16),
-                  const SizedBox(height: 4),
-                  Text(
-                    email,
-                    style: AppTextStyles.regular14.copyWith(color: Colors.grey),
+                      _buildInfoField(
+                        icon: Icons.person_outline,
+                        label: 'Name',
+                        value: name,
+                      ),
+                      _buildInfoField(
+                        icon: Icons.email_outlined,
+                        label: 'Email',
+                        value: email,
+                      ),
+                      const SizedBox(height: 150),
+                    ],
                   ),
-
-                  const SizedBox(height: 32),
-                  _buildProfileOption(
-                    icon: Icons.person_outline,
-                    title: 'Edit Profile',
-                    onTap: () {
-                      // TODO: Navigate to edit profile
-                    },
-                  ),
-                  _buildProfileOption(
-                    icon: Icons.shopping_bag_outlined,
-                    title: 'My Orders',
-
-                    onTap: () {
-                      // TODO: Navigate to orders
-                    },
-                  ),
-                  _buildProfileOption(
-                    icon: Icons.location_on_outlined,
-                    title: 'Addresses',
-                    onTap: () {
-                      // TODO: Navigate to addresses
-                    },
-                  ),
-                  _buildProfileOption(
-                    icon: Icons.payment_outlined,
-                    title: 'Payment Methods',
-                    onTap: () {
-                      // TODO: Navigate to payment methods
-                    },
-                  ),
-                  _buildProfileOption(
-                    icon: Icons.settings_outlined,
-                    title: 'Settings',
-                    onTap: () {
-                      // TODO: Navigate to settings
-                    },
-                  ),
-                  _buildProfileOption(
-                    icon: Icons.help_outline,
-                    title: 'Help & Support',
-                    onTap: () {
-                      // TODO: Navigate to help
-                    },
-                  ),
-                  const SizedBox(height: 16),
-
-                  const SizedBox(height: 32),
 
                   _buildLogoutButton(context, state),
                 ],
               ),
             );
           },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoField({
+    required IconData icon,
+    required String label,
+    required String value,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      decoration: BoxDecoration(
+        color: AppColors.primary.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey[200]!),
+      ),
+      child: ListTile(
+        leading: Icon(icon, color: AppColors.primary),
+        title: Text(
+          label,
+          style: AppTextStyles.regular14.copyWith(color: Colors.grey),
+        ),
+        subtitle: Text(
+          value,
+          style: AppTextStyles.medium14.copyWith(color: Colors.black87),
         ),
       ),
     );
@@ -165,27 +155,6 @@ class Profile extends StatelessWidget {
                 'Logout',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-      ),
-    );
-  }
-
-  // Profile Options
-  Widget _buildProfileOption({
-    required IconData icon,
-    required String title,
-    required VoidCallback onTap,
-  }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      decoration: BoxDecoration(
-        color: AppColors.primary.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: ListTile(
-        leading: Icon(icon, color: AppColors.primary),
-        title: Text(title, style: AppTextStyles.medium14),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-        onTap: onTap,
       ),
     );
   }

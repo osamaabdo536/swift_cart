@@ -27,7 +27,12 @@ class Cart extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 30, top: 10),
+            padding: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+              bottom: 30,
+              top: 10,
+            ),
             child: Row(
               children: [
                 Column(
@@ -62,7 +67,10 @@ class Cart extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text("Check Out", style: AppTextStyles.white18Medium),
+                        const Text(
+                          "Check Out",
+                          style: AppTextStyles.white18Medium,
+                        ),
                         const SizedBox(width: 15),
                         SvgPicture.asset(AppIcons.arrowIcon, width: 20),
                       ],
