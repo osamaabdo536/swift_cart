@@ -7,17 +7,18 @@ class DioConfig {
 
   static final Duration timeout = const Duration(seconds: 30);
 
+  static Dio? _dio;
+
   static Dio getDio() {
-    Dio dio = Dio()
+    if (_dio != null) return _dio!;
+    _dio = Dio()
       ..options.baseUrl = ApiConstants.baseUrl
       ..options.connectTimeout = timeout
       ..options.receiveTimeout = timeout
       ..options.responseType = ResponseType.json
       ..options.contentType = 'application/json'
-      ..interceptors.addAll([
-        AuthInterceptor(),
-      ]);
-    return dio;
+      ..interceptors.addAll([AuthInterceptor()]);
+    return _dio!;
   }
 }
 
@@ -37,10 +38,8 @@ class DioConfig {
 // }
 
 class AuthInterceptor extends InterceptorsWrapper {
-
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-
     options.headers['token'] = ApiConstants.token;
     debugPrint('Request to: ${options.path}');
     debugPrint('Headers: ${options.headers}');

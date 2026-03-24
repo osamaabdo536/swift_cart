@@ -1,16 +1,19 @@
 class ApiConstants {
   ApiConstants._();
 
-  static const String baseUrl = 'https://ecommerce.routemisr.com/';
+  static const String baseUrl = 'https://ecommerce.routemisr.com/api/v1/';
 
   // Auth endpoints
-  static const String login = 'api/v1/auth/signin';
-  static const String register = 'api/v1/auth/signup';
+  static const String login = 'auth/signin';
+  static const String register = 'auth/signup';
   // Note: No logout endpoint available in API
 
-  // Product endpoints
-  static const String productsEndPoint = 'api/v1/products';
-  static const String wishlistEndPoint = 'api/v1/wishlist';
+  static const String productsEndPoint = 'products';
+  static const String wishlistEndPoint = 'wishlist';
+
+  /////Categories///
+  static const String categoriesEndPoint = 'categories';
+  /////Categories/////
 
   //temp token
   static const String token =

@@ -1,14 +1,16 @@
 import 'package:dio/dio.dart';
 import 'package:swift_cart/core/network/dio_config.dart';
-import '../../features/product/model/products_model.dart';
+import 'package:swift_cart/features/product/model/products_model.dart';
+import '../../features/category/model/category_model.dart' as cat;
+import '../../features/category/model/category_model.dart';
+import 'api_constants.dart' show ApiConstants;
 import 'api_exception.dart';
-import 'api_constants.dart';
 
 class ApiService {
+  final Dio _dio = DioConfig.getDio();
+
   ApiService._();
   static final ApiService instance = ApiService._();
-
-  final Dio _dio = DioConfig.getDio();
 
   // Generic methods
   Future<Response> get(String endpoint) async {
@@ -19,17 +21,9 @@ class ApiService {
     }
   }
 
-  Future<Response> post(String endpoint, {dynamic data}) async {
+  Future<Response> post(String endpoint, {Object? data}) async {
     try {
       return await _dio.post(endpoint, data: data);
-    } on DioException catch (e) {
-      throw ApiException.fromDioError(e);
-    }
-  }
-
-  Future<Response> delete(String endpoint) async {
-    try {
-      return await _dio.delete(endpoint);
     } on DioException catch (e) {
       throw ApiException.fromDioError(e);
     }
@@ -93,4 +87,29 @@ class ApiService {
       throw ApiException.fromDioError(e);
     }
   }
+
+  //////////Categories/////////
+
+  Future<List<cat.CategoryModel>> getAllCategories() async {
+    try {
+      final response = await _dio.get(ApiConstants.categoriesEndPoint);
+      return CategoriesResponse.fromJson(response.data).data;
+    } on DioException catch (e) {
+      throw ApiException.fromDioError(e);
+    }
+  }
+
+  Future<List<ProductModel>> getProductsByCategory(String categoryId) async {
+    try {
+      final response = await _dio.get(
+        ApiConstants.productsEndPoint,
+        queryParameters: {'category': categoryId},
+      );
+      return ProductsResponse.fromJson(response.data).data;
+    } on DioException catch (e) {
+      throw ApiException.fromDioError(e);
+    }
+  }
+
+  //////////Categories///////////
 }

@@ -148,4 +148,11 @@ class AppTextStyles {
     fontWeight: FontWeight.w400,
     color: AppColors.textColor,
   );
+
+  static const TextStyle dark24Bold = TextStyle(
+    color: AppColors.textColor,
+    fontSize: 24,
+    fontFamily: _fontFamily,
+    fontWeight: FontWeight.w700,
+  );
 }
