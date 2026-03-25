@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:swift_cart/core/resources/app_colors.dart';
 import 'package:swift_cart/core/resources/app_icons.dart';
+import 'package:swift_cart/core/utils/snackbar.dart';
 import 'package:swift_cart/features/cart/cart.dart';
+import 'package:swift_cart/features/cart/cubit/cart_cubit.dart';
 import 'package:swift_cart/features/product/model/products_model.dart';
 import 'package:swift_cart/features/product/widgets/product_slider.dart';
 import '../../core/resources/app_text_styles.dart';
@@ -32,7 +35,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Cart(),
+                    builder: (context) => CartPage(),
                   ),
                 );
               },
@@ -204,19 +207,31 @@ class _ProductDetailsState extends State<ProductDetails> {
                         borderRadius: BorderRadius.circular(24),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      final cubit = context.read<CartCubit>();
+                      bool exists = cubit.isInCart(widget.product.id);
+                      bool success = false;
+
+                      try {
+                        if (exists) {
+                          success = true;
+                          await cubit.updateQuantity(widget.product.id, quantity);
+                        } else {
+                          success = await cubit.addToCart(widget.product.id, quantity: quantity);
+                        }
+                        if (success) {
+                          showSuccess(context, "Added to cart successfully");
+                        }
+                      } catch (e) {
+                        showError(context, "Failed to add to cart");
+                      }
+                    },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(
-                          Icons.add_shopping_cart_outlined,
-                          color: AppColors.whiteColor,
-                        ),
-                        SizedBox(width: 20),
-                        const Text(
-                          "Add to cart",
-                          style: AppTextStyles.white18Medium,
-                        ),
+                        const Icon(Icons.add_shopping_cart_outlined, color: AppColors.whiteColor),
+                        const SizedBox(width: 20),
+                        const Text("Add to cart", style: AppTextStyles.white18Medium),
                       ],
                     ),
                   ),

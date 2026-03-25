@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:swift_cart/core/utils/snackbar.dart';
+import 'package:swift_cart/features/cart/cubit/cart_cubit.dart';
 import '../../../core/resources/app_colors.dart';
 import '../../../core/resources/app_icons.dart';
 import '../../../core/resources/app_text_styles.dart';
@@ -77,7 +79,6 @@ class FavoriteItem extends StatelessWidget {
                             alignment: Alignment.center,
                             children: [
                               Positioned(
-                                top: -5,
                                 child: SvgPicture.asset(
                                   AppIcons.favoriteFilledIcon,
                                   width: 58,
@@ -94,8 +95,6 @@ class FavoriteItem extends StatelessWidget {
                   const SizedBox(height: 4),
 
                   const Spacer(),
-
-                  /// price + button
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -126,7 +125,15 @@ class FavoriteItem extends StatelessWidget {
                       SizedBox(
                         height: 36,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () async{
+                            final cubit = context.read<CartCubit>();
+                            final success = await cubit.addToCart(product.id);
+                            if (success) {
+                              showSuccess(context, "Added to cart successfully");
+                            } else {
+                              showError(context, "Failed to add");
+                            }
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.mainColor,
                             shape: RoundedRectangleBorder(

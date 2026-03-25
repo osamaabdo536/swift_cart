@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:swift_cart/core/utils/snackbar.dart';
+import 'package:swift_cart/features/cart/cubit/cart_cubit.dart';
 import 'package:swift_cart/features/favorite/cubit/favorite_cubit.dart';
 import 'package:swift_cart/features/favorite/cubit/favorite_state.dart';
 import '../../../core/resources/app_icons.dart';
@@ -17,14 +19,7 @@ class ProductItem extends StatefulWidget {
 
 class _ProductItemState extends State<ProductItem> {
   @override
-Widget build(BuildContext context) {
-  return BlocBuilder<FavoriteCubit, FavoriteState>(
-    builder: (context, state) {
-
-      final favoriteCubit = context.read<FavoriteCubit>();
-
-      bool isFav = favoriteCubit.favoriteIds.contains(widget.product.id);
-
+    Widget build(BuildContext context) {
       return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       elevation: 2,
@@ -43,18 +38,37 @@ Widget build(BuildContext context) {
               Positioned(
                 top: 8,
                 right: 8,
-                child: InkWell(
-                  onTap: () {
-                    /// add to favorite logic
-                      if (isFav) {
-                        context.read<FavoriteCubit>().removeFromFavorite(widget.product.id);
-                      } else {
-                        context.read<FavoriteCubit>().addToFavorite(widget.product.id);
-                      }
+                child: BlocBuilder<FavoriteCubit, FavoriteState>(
+                  builder: (context, state) {
+                    bool isFav = context
+                        .read<FavoriteCubit>()
+                        .favoriteIds
+                        .contains(widget.product.id);
+                    return InkWell(
+                      onTap: () async {
+                        try {
+                          if (isFav) {
+                            await context
+                                .read<FavoriteCubit>()
+                                .removeFromFavorite(widget.product.id);
+
+                            showSuccess(context, "Removed from favorites");
+                          } else {
+                            await context
+                                .read<FavoriteCubit>()
+                                .addToFavorite(widget.product.id);
+
+                            showSuccess(context, "Added to favorites");
+                          }
+                        } catch (e) {
+                          showError(context, "Failed to add to favorites");
+                        }
+                      },
+                      child: isFav
+                          ? SvgPicture.asset(AppIcons.favoriteFilledIcon)
+                          : SvgPicture.asset(AppIcons.favoriteCircleIcon),
+                    );
                   },
-                  child: isFav
-                      ? SvgPicture.asset(AppIcons.favoriteFilledIcon)
-                      : SvgPicture.asset(AppIcons.favoriteCircleIcon),
                 ),
               ),
             ],
@@ -108,8 +122,14 @@ Widget build(BuildContext context) {
                       ],
                     ),
                     InkWell(
-                      onTap: () {
-                        /// add to cart logic
+                      onTap: () async{
+                        final cubit = context.read<CartCubit>();
+                        final success = await cubit.addToCart(widget.product.id);
+                        if (success) {
+                          showSuccess(context, "Added to cart successfully");
+                        } else {
+                          showError(context, "Failed to add");
+                        }
                       },
                       child: SvgPicture.asset(AppIcons.plusIcon),
                     ),
@@ -120,8 +140,6 @@ Widget build(BuildContext context) {
           ),
         ],
       ),
-    );
-  }
     );
   }
 }

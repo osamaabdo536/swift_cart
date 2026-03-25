@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:swift_cart/features/cart/cubit/cart_cubit.dart';
 import '../../../core/resources/app_colors.dart';
 import '../../../core/resources/app_icons.dart';
 import '../../../core/resources/app_text_styles.dart';
+import '../model/cart_model.dart';
 
-class CartItem extends StatelessWidget {
-  const CartItem({super.key});
+class CartItemWidget extends StatelessWidget {
+  final CartItemModel item;
+  final CartCubit cubit;
+
+  const CartItemWidget({super.key, required this.item, required this.cubit});
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +25,8 @@ class CartItem extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(15),
-            child: Image.asset(
-              "assets/images/slider1.png",
+            child: Image.network(
+              item.image,
               width: 120,
               height: 115,
               fit: BoxFit.cover,
@@ -39,7 +44,7 @@ class CartItem extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          "Nike Air Jordon",
+                          item.title,
                           style: AppTextStyles.main20SemiBold.copyWith(
                             color: AppColors.textColor,
                           ),
@@ -48,7 +53,7 @@ class CartItem extends StatelessWidget {
                         ),
                       ),
                       InkWell(
-                        onTap: () {},
+                        onTap: () => cubit.removeFromCart(item.id),
                         child: SvgPicture.asset(
                           AppIcons.deleteIcon,
                           width: 20,
@@ -58,19 +63,12 @@ class CartItem extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    "Orange | Size: 40",
-                    style: AppTextStyles.main14Regular.copyWith(
-                      color: AppColors.textColor.withOpacity(0.6),
-                    ),
-                  ),
                   const Spacer(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "EGP 3,500",
+                        "EGP ${item.price}",
                         style: AppTextStyles.main14Medium.copyWith(
                           color: AppColors.textColor,
                         ),
@@ -84,14 +82,18 @@ class CartItem extends StatelessWidget {
                         child: Row(
                           children: [
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () => cubit.updateQuantity(
+                                  item.id, item.quantity - 1),
                               constraints: const BoxConstraints(),
                               padding: const EdgeInsets.symmetric(horizontal: 8),
                               icon: SvgPicture.asset(AppIcons.minusIcon, width: 18),
                             ),
-                            Text("1", style: AppTextStyles.white18Medium.copyWith(fontSize: 14)),
+                            Text("${item.quantity}",
+                                style: AppTextStyles.white18Medium.copyWith(
+                                    fontSize: 14)),
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () => cubit.updateQuantity(
+                                  item.id, item.quantity + 1),
                               constraints: const BoxConstraints(),
                               padding: const EdgeInsets.symmetric(horizontal: 8),
                               icon: SvgPicture.asset(AppIcons.plusIcon2, width: 18),

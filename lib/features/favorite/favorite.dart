@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:swift_cart/features/favorite/cubit/favorite_cubit.dart';
 import 'package:swift_cart/features/favorite/cubit/favorite_state.dart';
 import 'package:swift_cart/features/favorite/widgets/favorite_item.dart';
-import '../../../core/resources/app_icons.dart';
 import '../../../core/resources/app_text_styles.dart';
 
 class Favorite extends StatelessWidget {
@@ -17,10 +15,6 @@ class Favorite extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
-          leading: IconButton(
-            onPressed: () {},
-            icon: SvgPicture.asset(AppIcons.arrowBackIcon),
-          ),
           title: Text(
             "Favorite",
             style: AppTextStyles.main20SemiBold,

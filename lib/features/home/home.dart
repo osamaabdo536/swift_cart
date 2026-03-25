@@ -56,7 +56,7 @@ class Home extends StatelessWidget {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => const Cart(),
+                                        builder: (context) => const CartPage(),
                                       ),
                                     );
                                   },
