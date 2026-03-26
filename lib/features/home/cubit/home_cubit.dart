@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../core/network/dio_config.dart';
+import '../../../../../core/network/dio_config.dart';
 import 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeStates> {
@@ -29,16 +29,16 @@ class HomeCubit extends Cubit<HomeStates> {
     }
   }
 
-  void searchProducts(String query) {
-    if (query.isEmpty) {
-      filteredProducts = allProducts;
-    } else {
-      filteredProducts = allProducts.where((product) {
-        final title = product['title'].toLowerCase();
-        final searchLower = query.toLowerCase();
-        return title.contains(searchLower);
-      }).toList();
-    }
-    emit(HomeSuccessState(filteredProducts, categories, brands));
-  }
+  // void searchProducts(String query) {
+  //   if (query.isEmpty) {
+  //     filteredProducts = allProducts;
+  //   } else {
+  //     filteredProducts = allProducts.where((product) {
+  //       final title = product['title'].toLowerCase();
+  //       final searchLower = query.toLowerCase();
+  //       return title.contains(searchLower);
+  //     }).toList();
+  //   }
+  //   emit(HomeSuccessState(filteredProducts, categories, brands));
+  // }
 }

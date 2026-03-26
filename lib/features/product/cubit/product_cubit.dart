@@ -15,4 +15,22 @@ class ProductCubit extends Cubit<ProductState> {
       emit(ProductFailureState(errMsg: e.message));
     }
   }
+
+  void searchProducts(String query) {
+    final currentState = state;
+    if (currentState is ProductSuccessState) {
+      if (query.isEmpty) {
+        emit(ProductSuccessState(products: currentState.products));
+      } else {
+        final filtered = currentState.products
+            .where((product) =>
+            product.title.toLowerCase().contains(query.toLowerCase()))
+            .toList();
+        emit(ProductSuccessState(
+          products: currentState.products,
+          filteredProducts: filtered,
+        ));
+      }
+    }
+  }
 }

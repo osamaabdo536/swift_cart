@@ -4,8 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:swift_cart/features/cart/cart.dart';
 import 'package:swift_cart/features/category/view/category_products_screen.dart';
 import 'package:swift_cart/features/home/all_categories.dart';
-import 'home_cubit.dart';
-import 'home_state.dart';
+import 'cubit/home_cubit.dart';
+import 'cubit/home_state.dart';
 import 'category_item.dart';
 import 'package:carousel_slider_plus/carousel_slider_plus.dart';
 import 'package:swift_cart/core/resources/app_colors.dart';
@@ -45,7 +45,7 @@ class Home extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "Route",
+                                  "Swift Cart",
                                   style: AppTextStyles.main20SemiBold.copyWith(
                                     fontSize: 24,
                                   ),

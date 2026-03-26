@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:swift_cart/features/favorite/cubit/favorite_cubit.dart';
 import 'package:swift_cart/features/favorite/cubit/favorite_state.dart';
 import 'package:swift_cart/features/favorite/widgets/favorite_item.dart';
 import '../../../core/resources/app_text_styles.dart';
+import '../../core/resources/app_icons.dart';
+import '../cart/cart.dart';
 
 class Favorite extends StatelessWidget {
   const Favorite({super.key});
@@ -14,12 +17,24 @@ class Favorite extends StatelessWidget {
       create: (_) => FavoriteCubit()..getFavorites(),
       child: Scaffold(
         appBar: AppBar(
-          elevation: 0,
-          title: Text(
-            "Favorite",
-            style: AppTextStyles.main20SemiBold,
-          ),
+          title: Text("Favorite",style: AppTextStyles.main20SemiBold),
           centerTitle: true,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CartPage(),
+                    ),
+                  );
+                },
+                child: SvgPicture.asset(AppIcons.cartIcon),
+              ),
+            ),
+          ],
         ),
         body: BlocBuilder<FavoriteCubit, FavoriteState>(
           builder: (context, state) {
