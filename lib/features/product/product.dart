@@ -114,9 +114,7 @@ class _ProductState extends State<Product> {
                 return Center(child: Text(state.errMsg));
               }
               if (state is ProductSuccessState) {
-                /// هنا بنستخدم filteredProducts بدل products
                 final products = state.filteredProducts;
-
                 if (products.isEmpty) {
                   return Center(
                     child: Text(
@@ -125,7 +123,6 @@ class _ProductState extends State<Product> {
                     ),
                   );
                 }
-
                 return GridView.builder(
                   padding: const EdgeInsets.all(8),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
