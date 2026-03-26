@@ -208,25 +208,20 @@ class _ProductDetailsState extends State<ProductDetails> {
                       ),
                     ),
                     onPressed: () async {
-                      final cubit = context.read<CartCubit>();
-                      bool exists = cubit.isInCart(widget.product.id);
-                      bool success = false;
+  final cubit = context.read<CartCubit>();
+  bool success = false;
 
-                      try {
-                        if (exists) {
-                          success = true;
-                          await cubit.updateQuantity(widget.product.id, quantity);
-                        } else {
-                          success = await cubit.addToCart(widget.product.id, quantity: quantity);
-                        }
-                        if (success) {
-                          showSuccess(context, "Added to cart successfully");
-                        }
-                      } catch (e) {
-                        showError(context, "Failed to add to cart");
-                      }
-                    },
-                    child: Row(
+  try {
+    success = await cubit.addToCart(widget.product.id, quantity: quantity);
+
+    if (success) {
+      showSuccess(context, "Added to cart successfully");
+    }
+  } catch (e) {
+    showError(context, "Failed to add to cart");
+  }
+},
+child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Icon(Icons.add_shopping_cart_outlined, color: AppColors.whiteColor),

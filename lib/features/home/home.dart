@@ -138,39 +138,37 @@ class Home extends StatelessWidget {
                     ),
 
                     SliverGrid(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 4,
-                            mainAxisSpacing: 10,
-                            crossAxisSpacing: 5,
-                            childAspectRatio: 0.8,
-                          ),
-                      delegate: SliverChildBuilderDelegate((context, index) {
-                        var cat = state.categories[index];
-                        String finalImagePath =
-                            (cat['name'] == "Women's Fashion")
-                            ? "assets/images/fashion-photo.jpg"
-                            : cat['image'];
-                        return CategoryItem(
-                          title: cat['name'],
-                          imagePath: finalImagePath,
+  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+    crossAxisCount: 4,
+    mainAxisSpacing: 10,
+    crossAxisSpacing: 5,
+    childAspectRatio: 0.8,
+  ),
+  delegate: SliverChildBuilderDelegate((context, index) {
+    var cat = state.categories[index];
+    bool isAsset = cat['name'] == "Women's Fashion"; 
+   String imageWidget =
+        isAsset ? "assets/images/fashion-photo.jpg" : cat['image'];
 
-                          id: cat['_id'],
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CategoryProductsScreen(
-                                  categoryId: cat['_id'],
-                                  categoryName: cat['name'],
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                      }, childCount: state.categories.length),
-                    ),
-
+    return CategoryItem(
+      title: cat['name'],
+      imagePath: imageWidget,
+      id: cat['_id'],
+      isAsset: isAsset,
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CategoryProductsScreen(
+              categoryId: cat['_id'],
+              categoryName: cat['name'],
+            ),
+          ),
+        );
+      },
+    );
+  }, childCount: state.categories.length),
+),
                     SliverToBoxAdapter(
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),

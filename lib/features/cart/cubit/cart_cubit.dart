@@ -24,14 +24,24 @@ class CartCubit extends Cubit<CartState> {
   }
 
   Future<bool> addToCart(String productId, {int quantity = 1}) async {
-    try {
-      await ApiService.instance.addToCart(productId);
-      await getCart();
+  try {
+    final index = cartItems.indexWhere((item) => item.id == productId);
+    if (index != -1) {
+      final newQuantity = cartItems[index].quantity + quantity;
+      await updateQuantity(productId, newQuantity);
       return true;
-    } catch (e) {
-      emit(CartFailureState(errMsg: e.toString()));
-      return false;
     }
+    await ApiService.instance.addToCart(productId);
+    await getCart();
+    if (quantity > 1) {
+      await updateQuantity(productId, quantity);
+    }
+    return true;
+
+  } catch (e) {
+    emit(CartFailureState(errMsg: e.toString()));
+    return false;
+  }
   }
 
   Future<void> updateQuantity(String productId, int newCount) async {

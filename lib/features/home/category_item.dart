@@ -5,6 +5,7 @@ class CategoryItem extends StatelessWidget {
   final String title;
   final String id;
   final VoidCallback onTap;
+  final bool isAsset; // ← هنا أضفنا isAsset
 
   const CategoryItem({
     super.key,
@@ -12,7 +13,8 @@ class CategoryItem extends StatelessWidget {
     required this.title,
     required this.id,
     required this.onTap,
-  });
+    required this.isAsset, 
+   });
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +24,11 @@ class CategoryItem extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 40,
-            backgroundImage: NetworkImage(imagePath),
             backgroundColor: Colors.grey[200],
-          ),
+            backgroundImage: isAsset
+                ? AssetImage(imagePath) as ImageProvider 
+               : NetworkImage(imagePath), 
+                  ),
           const SizedBox(height: 5),
           Text(
             title,

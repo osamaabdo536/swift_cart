@@ -13,6 +13,7 @@ class Favorite extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List favproducts;
     return BlocProvider(
       create: (_) => FavoriteCubit()..getFavorites(),
       child: Scaffold(
@@ -45,9 +46,11 @@ class Favorite extends StatelessWidget {
               return Center(child: Text(state.errMsg));
             }
             if (state is FavoriteSuccessState || state is FavoriteUpdatedState) {
+
               final favorites = (state is FavoriteSuccessState)
                   ? state.favorites
                   : (state as FavoriteUpdatedState).favorites;
+                  favproducts= favorites;
 
               if (favorites.isEmpty) {
                 return const Center(child: Text("No favorites yet"));

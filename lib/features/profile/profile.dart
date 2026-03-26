@@ -67,36 +67,40 @@ class Profile extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    children: [
-                      const SizedBox(height: 20),
-                      CircleAvatar(
-                        radius: 50,
-                        backgroundColor: AppColors.primary.withValues(
-                          alpha: 0.1,
-                        ),
-                        child: Text(
-                          name.isNotEmpty ? name[0].toUpperCase() : "G",
-                          style: AppTextStyles.semiBold16.copyWith(
-                            fontSize: 32,
-                            color: AppColors.primary,
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: Column(
+                      children: [
+                       
+                        CircleAvatar(
+                          radius: 50,
+                          backgroundColor: AppColors.primary.withValues(
+                            alpha: 0.1,
+                          ),
+                          child: Text(
+                            name.isNotEmpty ? name[0].toUpperCase() : "G",
+                            style: AppTextStyles.semiBold16.copyWith(
+                              fontSize: 32,
+                              color: AppColors.primary,
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 32),
-
-                      _buildInfoField(
-                        icon: Icons.person_outline,
-                        label: 'Name',
-                        value: name,
-                      ),
-                      _buildInfoField(
-                        icon: Icons.email_outlined,
-                        label: 'Email',
-                        value: email,
-                      ),
-                      const SizedBox(height: 150),
-                    ],
+                        const SizedBox(height: 30),
+                    
+                        _buildInfoField(
+                          icon: Icons.person_outline,
+                          label: 'Name',
+                          value: name,
+                        ),
+                        _buildInfoField(
+                          icon: Icons.email_outlined,
+                          label: 'Email',
+                          value: email,
+                        ),
+                         const SizedBox(height: 240),
+                        
+                      ],
+                    ),
                   ),
 
                   _buildLogoutButton(context, state),
