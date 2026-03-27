@@ -61,19 +61,29 @@ class _RegisterState extends State<Register> {
       ),
       body: SafeArea(
         child: BlocListener<AuthCubit, AuthState>(
+          listenWhen: (previous, current) =>
+          current is AuthSuccess || current is AuthError,
           listener: (context, state) {
             if (state is AuthSuccess) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Registration successful!')),
+              ScaffoldMessenger.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  const SnackBar(content: Text('Registration successful!')),
+                );
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/home',
+                    (route) => false,
               );
-              Navigator.pushReplacementNamed(context, '/home');
             } else if (state is AuthError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message),
-                  backgroundColor: Colors.red,
-                ),
-              );
+              ScaffoldMessenger.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(
+                    content: Text(state.message),
+                    backgroundColor: Colors.red,
+                  ),
+                );
             }
           },
           child: SingleChildScrollView(

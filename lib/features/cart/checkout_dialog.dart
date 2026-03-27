@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:swift_cart/features/cart/cubit/cart_cubit.dart';
+import 'package:swift_cart/features/order/cubit/orders_cubit.dart';
+import 'package:swift_cart/features/order/model/order_model.dart';
+import 'package:swift_cart/features/order/orders_page.dart';
 
 class CheckoutDialog extends StatefulWidget {
   const CheckoutDialog({super.key});
@@ -59,7 +64,7 @@ class _CheckoutDialogState extends State<CheckoutDialog> {
               mainAxisSize: MainAxisSize.min,
               children: [
 
-              
+
                 Row(
                   children: [
                     const Text(
@@ -77,17 +82,17 @@ class _CheckoutDialogState extends State<CheckoutDialog> {
                   ],
                 ),
 
-  const SizedBox(height: 8),
+                const SizedBox(height: 8),
 
-Container(
-  width: double.infinity,
-  height: 1.5,
-  color: const Color.fromARGB(255, 210, 209, 209),
-),
+                Container(
+                  width: double.infinity,
+                  height: 1.5,
+                  color: const Color.fromARGB(255, 210, 209, 209),
+                ),
 
-const SizedBox(height: 12),
+                const SizedBox(height: 12),
 
-               
+
                 const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -118,7 +123,7 @@ const SizedBox(height: 12),
 
                 const SizedBox(height: 16),
 
-              
+
                 const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -145,7 +150,7 @@ const SizedBox(height: 12),
 
                 const SizedBox(height: 16),
 
-              
+
                 const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -167,7 +172,7 @@ const SizedBox(height: 12),
 
                 const SizedBox(height: 20),
 
-               
+
                 Row(
                   children: [
 
@@ -184,7 +189,7 @@ const SizedBox(height: 12),
                             ),
                           ),
                           overlayColor:
-                              WidgetStateProperty.resolveWith((states) {
+                          WidgetStateProperty.resolveWith((states) {
                             if (states.contains(WidgetState.pressed)) {
                               return Colors.grey.withOpacity(0.2);
                             }
@@ -203,12 +208,12 @@ const SizedBox(height: 12),
 
                     const SizedBox(width: 10),
 
-                    
+
                     Expanded(
                       child: ElevatedButton(
                         style: ButtonStyle(
                           backgroundColor:
-                              WidgetStateProperty.resolveWith((states) {
+                          WidgetStateProperty.resolveWith((states) {
                             if (states.contains(WidgetState.pressed)) {
                               return const Color(0xFF06004F).withOpacity(0.8);
                             }
@@ -228,23 +233,39 @@ const SizedBox(height: 12),
                         ),
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            Navigator.pop(context);
+
+                            final cartCubit = context.read<CartCubit>();
+                            final ordersCubit = context.read<OrdersCubit>();
+
+                            final order = OrderModel(
+                              id: DateTime.now().millisecondsSinceEpoch.toString(),
+                              items: List.from(cartCubit.cartItems),
+                              phone: phoneController.text,
+                              address: addressController.text,
+                              notes: notesController.text,
+                              dateTime: DateTime.now(),
+                              totalPrice: cartCubit.totalPrice,
+                            );
+
+                            ordersCubit.addOrder(order);
+                            cartCubit.clearCart();
+
+                            Navigator.pop(context); // يقفل الـ dialog
 
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                behavior: SnackBarBehavior.floating,
-                                backgroundColor: Colors.green,
-                                margin: const EdgeInsets.all(16),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                content: const Text(
-                                  "Order placed successfully",
-                                ),
+                              const SnackBar(content: Text("Order placed successfully")),
+                            );
+
+                            // ✅ هنا بقى نحط navigation المباشر
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const OrdersPage(),
                               ),
                             );
                           }
-                        },
+                        }
+                        ,
                         child: const Text("Place Order"),
                       ),
                     ),

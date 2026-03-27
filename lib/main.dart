@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:swift_cart/features/cart/cubit/cart_cubit.dart';
 import 'package:swift_cart/features/favorite/cubit/favorite_cubit.dart';
 import 'core/utils/bloc_observer.dart';
+import 'features/order/cubit/orders_cubit.dart';
 import 'my_app.dart';
 
 void main() {
@@ -14,6 +15,7 @@ void main() {
       providers: [
         BlocProvider(create: (_) => FavoriteCubit()),
         BlocProvider(create: (_) => CartCubit()..getCart()),
+        BlocProvider(create: (_) => OrdersCubit()),
       ],
       child: const MyApp(),
     ),

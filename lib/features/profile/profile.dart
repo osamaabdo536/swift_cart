@@ -6,6 +6,8 @@ import 'package:swift_cart/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:swift_cart/features/auth/presentation/cubit/auth_state.dart';
 import 'package:swift_cart/features/auth/login.dart';
 
+import '../order/orders_page.dart';
+
 class Profile extends StatelessWidget {
   const Profile({super.key});
 
@@ -97,8 +99,23 @@ class Profile extends StatelessWidget {
                           label: 'Email',
                           value: email,
                         ),
-                         const SizedBox(height: 240),
-                        
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const OrdersPage(),
+                              ),
+                            );
+                          },
+                          child: _buildInfoField(
+                            icon: Icons.shopping_bag_outlined,
+                            label: 'orders',
+                            value: "My Orders",
+                          ),
+                        ),
+                         const SizedBox(height: 120),
+
                       ],
                     ),
                   ),
