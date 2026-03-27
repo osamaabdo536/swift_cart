@@ -89,7 +89,6 @@ class _ProductItemState extends State<ProductItem> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Title
                   Text(
                     widget.product.title,
                     maxLines: 1,

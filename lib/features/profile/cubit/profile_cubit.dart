@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:swift_cart/features/auth/domain/repositories/auth_repository.dart'; // تأكدي من المسار
+import 'package:swift_cart/features/auth/domain/repositories/auth_repository.dart'; 
 import 'profile_state.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {

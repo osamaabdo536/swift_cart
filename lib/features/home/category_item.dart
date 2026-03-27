@@ -5,7 +5,7 @@ class CategoryItem extends StatelessWidget {
   final String title;
   final String id;
   final VoidCallback onTap;
-  final bool isAsset; // ← هنا أضفنا isAsset
+  final bool isAsset; 
 
   const CategoryItem({
     super.key,
